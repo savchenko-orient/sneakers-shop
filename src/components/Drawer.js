@@ -1,21 +1,19 @@
-function Drawer({ onClose, items = [] }) {
+import React from 'react';
+import CartItem from "./CartItem";
+
+function Drawer({ onClose, items = [], onRemove }) {
+
     return (
         <div className="overlay">
             <div className="drawer">
                 <h2 className="d-flex justify-between mb-30">Кошик <img onClick={onClose} className="cu-p" src="/img/btn-remove.svg" alt="btn-remove" /></h2>
                 <div className="items">
-                    {items.map((obj) => (
-                        <>
-                            <div className="cartItem d-flex align-center mb-20">
-                                <div style={{ backgroundImage: `url(${obj.imgURL})` }}
-                                    className="cartItemImg"></div>
-                                <div className="mr-20 flex">
-                                    <p className="mb-5">{obj.title}</p>
-                                    <b>{obj.price} грн.</b>
-                                </div>
-                                <img className="removeBtn" src="/img/btn-remove.svg" alt="btn-remove" />
-                            </div>
-                        </>
+                    {items.map((item, index) => (
+                        <CartItem title={item.title}
+                            price={item.price}
+                            imgURL={item.imgURL}
+                            onRemove={onRemove}
+                            key={index} />
                     ))}
                 </div>
                 <div className="cartTotalBlock">

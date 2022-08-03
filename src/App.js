@@ -19,14 +19,15 @@ function App() {
   }, []);
 
   const onAddToCart = (obj) => {
-    setCartItems(prev => [...prev, obj]);    /*prev - это предыдущие данные из переменной в useState. в данном случае из cartItems*/
+    setCartItems([...cartItems, obj]);    /*prev - это предыдущие данные из переменной в useState. в данном случае из cartItems*/
   };
-  console.log('cartItems: ', cartItems);
-
+  const onRemoveFromCart = (obj) => {
+    setCartItems(cartItems.filter(item => item.title !== obj.title));
+  }
 
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer items={cartItems} onClose={onClickCart} />}   {/*true && true Тогда это выполнится.*/}
+      {cartOpened && <Drawer items={cartItems} onClose={onClickCart} onRemove={onRemoveFromCart} />}   {/*true && true Тогда это выполнится.*/}
       <Header onClickCart={onClickCart} />
       <div className="content p-40">
         <div className="mb-40 align-center justify-between d-flex">
