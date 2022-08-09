@@ -1,53 +1,88 @@
 import React from 'react';
-import Card from './components/Card';
+import { Routes, Route } from 'react-router-dom';
+import axios from 'axios';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
+
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 
 
 function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
+  const [favorites, setFavorites] = React.useState([]);
+  const [searchValue, setSearchValue] = React.useState('');
   const [cartOpened, setCartOpened] = React.useState(false);
   const onClickCart = () => {
     setCartOpened(!cartOpened)
   };
 
   React.useEffect(() => {
-    fetch('https://62e927ef01787ec712126779.mockapi.io/Items').then((data) => {
-      return data.json().then((data) => { setItems(data); });
+    axios.get('https://62e927ef01787ec712126779.mockapi.io/Items').then((res) => {
+      setItems(res.data);
+    });
+    axios.get('https://62e927ef01787ec712126779.mockapi.io/cart').then((res) => {
+      setCartItems(res.data);
+    });
+    axios.get('https://62e927ef01787ec712126779.mockapi.io/favorites').then((res) => {
+      setFavorites(res.data);
     });
   }, []);
 
   const onAddToCart = (obj) => {
-    setCartItems([...cartItems, obj]);    /*prev - это предыдущие данные из переменной в useState. в данном случае из cartItems*/
+    axios.post('https://62e927ef01787ec712126779.mockapi.io/cart', obj);
+    setCartItems((prev) => [...prev, obj]);    /*prev - это предыдущие данные из переменной в useState. в данном случае из cartItems*/
   };
   const onRemoveFromCart = (obj) => {
-    setCartItems(cartItems.filter(item => item.title !== obj.title));
+    axios.delete(`https://62e927ef01787ec712126779.mockapi.io/cart/${obj.id}`);
+    setCartItems((prev) => prev.filter(item => item.id !== obj.id));
   }
+
+  const onAddToFavorite = async (obj) => {
+    try {
+      if (favorites.find(item => item.id === obj.id)) {
+        axios.delete(`https://62e927ef01787ec712126779.mockapi.io/favorites/${obj.id}`);
+        setFavorites((prev) => prev.filter(item => item.id !== obj.id));
+      } else {
+        const { data } = await axios.post('https://62e927ef01787ec712126779.mockapi.io/favorites', obj);
+        setFavorites((prev) => [...prev, data]);
+      }
+    } catch (error) {
+      console.log('Не вдалося додати до фаворитів');
+    }
+  }
+
+  const onChangeSearchInput = (event) => {
+    setSearchValue(event.target.value);
+  };
 
   return (
     <div className="wrapper clear">
       {cartOpened && <Drawer items={cartItems} onClose={onClickCart} onRemove={onRemoveFromCart} />}   {/*true && true Тогда это выполнится.*/}
       <Header onClickCart={onClickCart} />
-      <div className="content p-40">
-        <div className="mb-40 align-center justify-between d-flex">
-          <h1 >Всі кросівки</h1>
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="search" />
-            <input type="text" placeholder='Пошук...' />
-          </div>
-        </div>
-        <div className="d-flex flex-wrap">
-          {items.map((item, index) => (
-            <Card title={item.title}
-              price={item.price}
-              imgURL={item.imgURL}
-              onPlus={onAddToCart}
-              onFavorite={() => console.log('Нажали Лайк')}
-              key={index} />
-          ))}
-        </div>
-      </div>
+      <Routes>
+        <Route exact path="/" element={
+          <Home
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            onChangeSearchInput={onChangeSearchInput}
+            items={items}
+            onAddToCart={onAddToCart}
+            onAddToFavorite={onAddToFavorite}
+          />
+        }>
+        </Route>
+        <Route path="/favorites" element={
+          <Favorites
+            items={favorites}
+            onAddToFavorite={onAddToFavorite}
+          />
+        }>
+        </Route>
+      </Routes>
+
+
     </div>
   );
 }

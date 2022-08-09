@@ -1,8 +1,8 @@
 import styles from './CartItem.module.scss';
 
-function CartItem({ imgURL, title, price, onRemove }) {
+function CartItem({ imgURL, title, price, onRemove, id }) {
     const onClickRemove = () => {
-        onRemove({ title, price, imgURL })
+        onRemove({ id });
     }
     return (
         <div className={styles.cartItem}>
