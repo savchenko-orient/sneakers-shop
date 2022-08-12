@@ -6,7 +6,9 @@ function Home({
     onChangeSearchInput,
     items,
     onAddToCart,
-    onAddToFavorite }) {
+    onAddToFavorite,
+    cartItems
+}) {
     return (
         <div className="content p-40">
             <div className="mb-40 align-center justify-between d-flex">
@@ -33,7 +35,9 @@ function Home({
                             id={item.id}
                             onPlus={(obj) => onAddToCart(obj)}
                             onFavorite={(obj) => onAddToFavorite(obj)}
-                            key={index} />
+                            key={index}
+                            added={cartItems.some((obj) => Number(obj.id) === Number(item.id))}
+                        />
                     ))}
             </div>
         </div>
