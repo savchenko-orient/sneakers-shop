@@ -7,6 +7,7 @@ import AppContext from './components/context';
 
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
+import Orders from './pages/Orders';
 
 
 function App() {
@@ -79,9 +80,24 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ items, cartItems, favorites, isItemAdded, onAddToFavorite, setCartOpened, setCartItems }} >
+    <AppContext.Provider
+      value={{
+        items,
+        cartItems,
+        favorites,
+        isItemAdded,
+        onAddToFavorite,
+        onAddToCart,
+        setCartOpened,
+        setCartItems
+      }} >
       <div className="wrapper clear">
-        {cartOpened && <Drawer items={cartItems} onClose={onClickCart} onRemove={onRemoveFromCart} />}   {/*true && true Тогда это выполнится.*/}
+        {cartOpened && <Drawer
+          items={cartItems}
+          onClose={onClickCart}
+          onRemove={onRemoveFromCart}
+
+        />}   {/*true && true Тогда это выполнится.*/}
         <Header onClickCart={onClickCart} />
         <Routes>
           <Route exact path="/" element={
@@ -97,11 +113,21 @@ function App() {
             />
           }>
           </Route>
-          <Route path="/favorites" element={
-            <Favorites
-            />
-          }>
+
+          <Route
+            path="/favorites"
+            element={
+              <Favorites />
+            }>
           </Route>
+
+          <Route
+            path="/orders"
+            element={
+              <Orders />
+            }>
+          </Route>
+
         </Routes>
 
       </div>
