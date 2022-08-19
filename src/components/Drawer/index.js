@@ -1,12 +1,15 @@
 import React from 'react';
-import CartItem from "./CartItem";
-import Info from './Info';
 import axios from 'axios';
-import { useCart } from './../hooks/useCart';
+
+import CartItem from "../CartItem";
+import Info from '../Info';
+
+import { useCart } from '../../hooks/useCart';
+import styles from './Drawer.module.scss';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function Drawer({ onClose, items = [], onRemove }) {
+function Drawer({ onClose, items = [], onRemove, opened }) {
     const { cartItems, setCartItems, totalPrice } = useCart();
     const [isOrderCompleted, setIsOrderCompleted] = React.useState(false);
     const [orderId, setOrderId] = React.useState(null);
@@ -36,42 +39,44 @@ function Drawer({ onClose, items = [], onRemove }) {
     }
 
     return (
-        <div className="overlay">
-            <div className="drawer">
+        <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+            <div className={styles.drawer}>
                 <h2 className="d-flex justify-between mb-30">
                     Кошик <img onClick={onClose} className="cu-p" src="/img/btn-remove.svg" alt="btn-remove" />
                 </h2>
 
                 {
-                    items.length > 0 ? (<div className="d-flex flex-column flex"><div className="items">
-                        {items.map((item, index) => (
-                            <CartItem title={item.title}
-                                price={item.price}
-                                imgURL={item.imgURL}
-                                onRemove={onRemove}
-                                id={item.id}
-                                key={index} />
-                        ))}
-                    </div>
-                        <div className="cartTotalBlock">
-                            <ul>
-                                <li >
-                                    <span>Сумма</span>
-                                    <div></div>
-                                    <b>{totalPrice} грн</b>
-                                </li>
-                                <li >
-                                    <span>Податок 5%</span>
-                                    <div></div>
-                                    <b>{Math.ceil(totalPrice * 0.05)} грн</b>
-                                </li>
-                            </ul>
-                            <button disabled={isLoading}
-                                onClick={onClickOrder}
-                                className="greenButton">Оформити замовлення
-                                <img src="/img/arrow.svg" alt="arrow" />
-                            </button>
-                        </div></div>
+                    items.length > 0 ? (
+                        <div className="d-flex flex-column flex">
+                            <div className="items flex">
+                                {items.map((item, index) => (
+                                    <CartItem title={item.title}
+                                        price={item.price}
+                                        imgURL={item.imgURL}
+                                        onRemove={onRemove}
+                                        id={item.id}
+                                        key={index} />
+                                ))}
+                            </div>
+                            <div className="cartTotalBlock">
+                                <ul>
+                                    <li >
+                                        <span>Сумма</span>
+                                        <div></div>
+                                        <b>{totalPrice} грн</b>
+                                    </li>
+                                    <li >
+                                        <span>Податок 5%</span>
+                                        <div></div>
+                                        <b>{Math.ceil(totalPrice * 0.05)} грн</b>
+                                    </li>
+                                </ul>
+                                <button disabled={isLoading}
+                                    onClick={onClickOrder}
+                                    className="greenButton">Оформити замовлення
+                                    <img src="/img/arrow.svg" alt="arrow" />
+                                </button>
+                            </div></div>
                     ) : (
                         <Info
                             title={isOrderCompleted ? "Замовлення оформлено" : "Кошик порожній"}
