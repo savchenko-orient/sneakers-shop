@@ -42,7 +42,7 @@ function Drawer({ onClose, items = [], onRemove, opened }) {
         <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
             <div className={styles.drawer}>
                 <h2 className="d-flex justify-between mb-30">
-                    Кошик <img onClick={onClose} className="cu-p" src="/img/btn-remove.svg" alt="btn-remove" />
+                    Кошик <img onClick={onClose} className="cu-p" src="img/btn-remove.svg" alt="btn-remove" />
                 </h2>
 
                 {
@@ -74,7 +74,7 @@ function Drawer({ onClose, items = [], onRemove, opened }) {
                                 <button disabled={isLoading}
                                     onClick={onClickOrder}
                                     className="greenButton">Оформити замовлення
-                                    <img src="/img/arrow.svg" alt="arrow" />
+                                    <img src="img/arrow.svg" alt="arrow" />
                                 </button>
                             </div></div>
                     ) : (
@@ -83,7 +83,7 @@ function Drawer({ onClose, items = [], onRemove, opened }) {
                             description={isOrderCompleted
                                 ? `Ваше замовлення №${orderId} cкоро буде передано кур'єрській службі`
                                 : "Додайте хоча б один товар до кошика"}
-                            image={isOrderCompleted ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+                            image={isOrderCompleted ? "img/complete-order.jpg" : "img/empty-cart.jpg"}
                         />
                     )
                 }

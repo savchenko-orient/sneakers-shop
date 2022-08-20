@@ -34,12 +34,12 @@ function Home({
             <div className="mb-40 align-center justify-between d-flex">
                 <h1 >{searchValue ? `Пошук по запиту: "${searchValue}"` : 'Всі кросівки'}</h1>
                 <div className="search-block d-flex">
-                    <img src="/img/search.svg" alt="search" />
+                    <img src="img/search.svg" alt="search" />
                     {searchValue && (
                         <img
                             onClick={() => setSearchValue('')}
                             className="clear cu-p"
-                            src="/img/btn-remove.svg"
+                            src="img/btn-remove.svg"
                             alt="Clear"
                         />
                     )}

@@ -12,7 +12,7 @@ function CartItem({ imgURL, title, price, onRemove, id }) {
                 <p className="mb-5">{title}</p>
                 <b>{price} грн.</b>
             </div>
-            <img className={styles.removeBtn} onClick={onClickRemove} src="/img/btn-remove.svg" alt="btn-remove" />
+            <img className={styles.removeBtn} onClick={onClickRemove} src="img/btn-remove.svg" alt="btn-remove" />
         </div>
     )
 };
